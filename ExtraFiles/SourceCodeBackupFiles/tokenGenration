@@ -1,5 +1,4 @@
 package javaapplicationcompiler;
-
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +10,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+/**
+ *
+ * @author muhammadammar
+ */
 
 class Token
         {
@@ -46,8 +49,8 @@ void generatrtoken(){
    int i,j;
    String n="\r";
    int lineno=1;
-   boolean isTokenGenrated=false;
-    for(i=0;i<WordBreakedArray.size();i++){
+    for(i=0;i<WordBreakedArray.size();i++)
+    {
         if(WordBreakedArray.get(i).equals(n)){
         lineno++;
         }
@@ -55,39 +58,32 @@ void generatrtoken(){
        
      if(WordBreakedArray.get(i).equals(KeyWordArray.get(j))){   
             Token t8= new Token(KeyWordArray.get(j),WordBreakedArray.get(i),lineno);
-             isTokenGenrated=true;
    System.out.println("Classpart:"+t8.ClassPart+" "+"  Valuepart:"+t8.ValuePart+"  line#" +t8.lineNumber);
      }   
 }
    if(WordBreakedArray.get(i).equals("+") || WordBreakedArray.get(i).equals("-") ){
          Token t2= new Token("PM",WordBreakedArray.get(i),lineno);
-  isTokenGenrated=true;
-         System.out.println("Classpart:"+t2.ClassPart+" "+"Valuepart:"+t2.ValuePart+"line#" +t2.lineNumber);
+   System.out.println("Classpart:"+t2.ClassPart+" "+"Valuepart:"+t2.ValuePart+"line#" +t2.lineNumber);
           }
       else if(WordBreakedArray.get(i).equals("*") || WordBreakedArray.get(i).equals("/") ||WordBreakedArray.get(i).equals("%") ){
           Token t3= new Token("AM",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t3.ClassPart+" "+"Valuepart:"+t3.ValuePart+"line#" +t3.lineNumber);
+   System.out.println("Classpart:"+t3.ClassPart+" "+"Valuepart:"+t3.ValuePart+"line#" +t3.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("||") || WordBreakedArray.get(i).equals("&&")){
           Token t4= new Token("Logicaloperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t4.ClassPart+" "+"Valuepart:"+t4.ValuePart+"line#" +t4.lineNumber);
+   System.out.println("Classpart:"+t4.ClassPart+" "+"Valuepart:"+t4.ValuePart+"line#" +t4.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("!")){
           Token t5= new Token("Notoperator",WordBreakedArray.get(i),lineno);
-   isTokenGenrated=true;
-          System.out.println("Classpart:"+t5.ClassPart+" "+"Valuepart:"+t5.ValuePart+"line#" +t5.lineNumber);
+   System.out.println("Classpart:"+t5.ClassPart+" "+"Valuepart:"+t5.ValuePart+"line#" +t5.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("=")){
           Token t6= new Token("Assignmentoperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t6.ClassPart+" "+"Valuepart:"+t6.ValuePart+"line#" +t6.lineNumber);
+   System.out.println("Classpart:"+t6.ClassPart+" "+"Valuepart:"+t6.ValuePart+"line#" +t6.lineNumber);
       }
        else if(WordBreakedArray.get(i).equals("<") || WordBreakedArray.get(i).equals(">")){
           Token t7= new Token("Rationaloperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t7.ClassPart+" "+"Valuepart:"+t7.ValuePart+"line#" +t7.lineNumber);
+   System.out.println("Classpart:"+t7.ClassPart+" "+"Valuepart:"+t7.ValuePart+"line#" +t7.lineNumber);
       }
        else{
            
@@ -96,8 +92,7 @@ void generatrtoken(){
        
      if(WordBreakedArray.get(i).equals(PunctuatorArray.get(j))){   
             Token t1= new Token(PunctuatorArray.get(j),WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Classpart:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
+   System.out.println("Classpart:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
      }   
 }
    Pattern identifier = Pattern.compile("([A-Za-z][_]?|_)([A-Za-z0-9]+[_]?)*");
@@ -105,16 +100,14 @@ void generatrtoken(){
         boolean id = idmatch.matches();
         if(id==true){
         Token t9 = new Token("Identifier",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
         
-        Pattern doublematch = Pattern.compile("(\\.[0-9]*)[0-9]{1,13}(\\.[0-9]*)?");
+        Pattern doublematch = Pattern.compile("[0-9]{1,13}(\\.[0-9]*)?");
         Matcher dbmatch = doublematch.matcher(WordBreakedArray.get(i));
         boolean db = dbmatch.matches();
         if(db==true){
         Token t9 = new Token("Double",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
                 Pattern stringmatch = Pattern.compile("\".*?\"");
@@ -122,33 +115,27 @@ void generatrtoken(){
         boolean st = stmatch.matches();
         if(st==true){
         Token t9 = new Token("String",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
          for(j=0;j<booleanarray.size();j++){
        
      if(WordBreakedArray.get(i).equals(booleanarray.get(j))){   
             Token t1= new Token("Boolean",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Boolean:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
+   System.out.println("Boolean:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
      }   
 }
-      if( isTokenGenrated==false)
-          {   
-            Token invalidToken= new Token("invalid",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Classpart:"+invalidToken.ClassPart+" "+"Valuepart:"+invalidToken.ValuePart+"line#" +invalidToken.lineNumber);
-     }
+         
         
-   isTokenGenrated=false;
-    
+   
     }
    }
    
 }
+
 public class JavaApplicationCompiler {
     
-static String readFile() throws IOException
+
+   static String readFile() throws IOException
     {
            String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/NetBeansProjects/JavaApplicationCompiler/ExtraFiles/InputtestFile.txt")));
        return data;
@@ -188,7 +175,7 @@ static String readFile() throws IOException
    }
       static boolean linechangebreaker(char ch ){
           
-       if(ch == '\n'){
+       if(ch == '\r'){
            
         return true ;       
 }else return false;
@@ -206,27 +193,13 @@ static String readFile() throws IOException
      
      return false;
    }
-             static boolean isdigit(String ch){
-                 
-       String [] digits={"0","1","2","3","4","5","6","7","8","9"};
- for(int j=0;j<ch.length();j++){
-      
-     for(int i =0 ;i<digits.length; i ++ )
-     {
-         if(digits[i].equals(String.valueOf(ch) ))
-             return true;
-                 
-                     
-     }}
-     return false;
-   }
     public static void main(String[] args) throws IOException {
           
       ArrayList <String> allChars = new ArrayList();
         
      
 String fileInput = readFile();
-      
+      ArrayList <Integer> lineno = new ArrayList();
       
         
       String temp = "";
@@ -278,7 +251,7 @@ String fileInput = readFile();
       }
       
            
-             else if(linechangebreaker(fileInput.charAt(i))==true)
+                 else if(linechangebreaker(fileInput.charAt(i))==true)
       {
               if(temp.length()!=0){
                     allChars.add(temp);
@@ -289,53 +262,22 @@ String fileInput = readFile();
                   
    else if(fileInput.charAt(i)=='.')
               {
-                   if(temp.length()==0)
-                  {
-                    allChars.add(String.valueOf(fileInput.charAt(i)));
-                    
-                      }
-                    String regex = "[0-9]+";
-                  if(temp.matches(regex)) //temphas numbers 
+                  if(isNumeric(temp)== true) //temphas numbers 
                   {
                     temp+= fileInput.charAt(i);
                     
                       }
-                  else{
-                   allChars.add(temp);
+                      
+                             
+                      i++;
+                      while(Character.isDigit(fileInput.charAt(i))== true)
+                  {
+                      temp+= fileInput.charAt(i);
+                      i++;
+                  }  allChars.add(temp);
                     temp="";
-                    temp+=(String.valueOf(fileInput.charAt(i)));
-                  }
-                 
                     
-                  }
-  else if(fileInput.charAt(i)=='"')
-  {
-       allChars.add(temp);
-       temp="";
-       temp+=(String.valueOf(fileInput.charAt(i)));
-       i++;
-       while(fileInput.charAt(i)!='"')
-       {
-           if(fileInput.charAt(i)=='\n')
-           {allChars.add(temp);
-       temp="";
-       //i++;
-           }else
-           {  temp+=(String.valueOf(fileInput.charAt(i)));
-           i++;
-           }
-       }
-       temp+=(String.valueOf(fileInput.charAt(i)));
-       allChars.add(temp);
-       temp="";
-      
-       
-       
-  }
-   
-    
-   
-   
+                  }                             
    else {
                 
             temp+=fileInput.charAt(i);
@@ -368,13 +310,12 @@ String fileInput = readFile();
 
 String someString = temp;
 boolean isNumeric = someString.chars().allMatch( Character::isDigit );
-        Integer.parseInt(temp);  
+        //Integer.parseInt(temp);  
     return true;
   }
     catch(NumberFormatException e){  
     return false;  
   }  
     }
-   
     
 }

@@ -1,59 +1,19 @@
-package javaapplicationcompiler;
+package javaapplication3;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- *
- * @author muhammadammar
- */
-class Token
-        {
-    String ClassPart;
-    String ValuePart;
-    int lineNumber;
-    
-    Token(String classPart,String valuePart,int lineNumber )
-    {
-        this.ClassPart=classPart;
-        this.ValuePart=valuePart;
-        this.lineNumber=lineNumber;
-    }
-    
-}
-class LexicalAnalyzer
-{
-    String [] WordBreakedArray;
-     String [] KeyWordArray;//list of all keywords
-      String [] OperatorArray;//genral for all
-       String [] PunctuatorArray={";",",","{","}","(",")","[","]"};//genral for all
-       
-    LexicalAnalyzer(String [] File)
-    {
-        this.WordBreakedArray= File;
-        
-    }
-    int i=0,j=0;
-    while(WordBreakedArray[i]==PunctuatorArray[j]){
-    
-}
-   void isKeyWord(){}
-   void isOperator(){}
-   void ispunctuator(){}
-   void isIdentifer(){}
-   void isDouble(){}
-   void isString(){}
-   void isbool(){}   
-}
+  //jugari fix of breaker to be printed 
 
-public class JavaApplicationCompiler {
-    
+public class JavaApplication3 {
+   
+  
 
  static String readFile() throws IOException
     {
-           String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/Documents/test.txt")));
+           String  data = new String(Files.readAllBytes(Paths.get("C:\\Users\\Bilal\\Desktop\\test.txt")));
        return data;
     } 
     
@@ -76,7 +36,7 @@ public class JavaApplicationCompiler {
      return false;
    }
       static boolean operatorbreaker(char ch){
-       String [] operators={"+","-","*","/","%","<",">","&&","||","!","="};
+       String [] operators={"*","/","%","<",">","&&","||","!","=","+","-"};
  
       
      for(int i =0 ;i<operators.length; i ++ )
@@ -106,6 +66,20 @@ public class JavaApplicationCompiler {
      
      return false;
    }
+            static boolean digit(char ch){
+       String [] digits={"0","1","2","3","4","5","6","7","8","9"};
+ 
+      
+     for(int j =0 ;j<digits.length; j++ )
+     {
+         if(digits[j].equals(String.valueOf(ch) ))
+             return true;
+                 
+                     
+     }
+     return false;
+   }
+            
    
 
   
@@ -120,6 +94,7 @@ String fileInput = readFile();
       
       
       String temp = "";
+      
       
       for(int i =0;i<fileInput.length();i++){
           
@@ -171,19 +146,34 @@ String fileInput = readFile();
               {
                   if(isNumeric(temp)== true) //temphas numbers 
                   {
+                     
+//                      for(i=0;i>temp.length()-2;i++){
+//                          if(temp.charAt(i)=='.')
+//                          {allChars.add(temp);
+//                    temp="";}    
+//                      }
+                          
                     temp+= fileInput.charAt(i);
                     
-                      };
-                      i++;
-                      while(Character.isDigit(fileInput.charAt(i))== true)
-                  {
-                      temp+= fileInput.charAt(i);
-                      i++;
-                  }  allChars.add(temp);
-                    temp="";
+                      }
                   }                  
                           
+                           if(digit(fileInput.charAt(i))==true)
+      {
+          int j=0,k=0;
+          
+              if(punctuatorbreaker(temp.charAt(j))==true || operatorbreaker(temp.charAt(k)) ){
+                  allChars.add(temp);
+                       temp="";
+                    temp+=fileInput.charAt(i);
+                    
               
+      }
+              else{
+              temp+=fileInput.charAt(i);
+              }
+      }
+                         
                
       else{
                 
@@ -212,7 +202,7 @@ String fileInput = readFile();
 String someString = temp;
 boolean isNumeric = someString.chars().allMatch( Character::isDigit );
         //Integer.parseInt(temp);  
-    return true;
+          return true;
   }
     catch(NumberFormatException e){  
     return false;  
@@ -221,5 +211,5 @@ boolean isNumeric = someString.chars().allMatch( Character::isDigit );
   
       }
     
-}
+    
 

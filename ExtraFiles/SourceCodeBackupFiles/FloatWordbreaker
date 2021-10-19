@@ -1,4 +1,11 @@
-package javaapplicationcompiler;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+ 
+ // this file is all about flaot validation at lexical phase using regex 
+package javaapplication6;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -46,8 +53,8 @@ void generatrtoken(){
    int i,j;
    String n="\r";
    int lineno=1;
-   boolean isTokenGenrated=false;
-    for(i=0;i<WordBreakedArray.size();i++){
+    for(i=0;i<WordBreakedArray.size();i++)
+    {
         if(WordBreakedArray.get(i).equals(n)){
         lineno++;
         }
@@ -55,39 +62,32 @@ void generatrtoken(){
        
      if(WordBreakedArray.get(i).equals(KeyWordArray.get(j))){   
             Token t8= new Token(KeyWordArray.get(j),WordBreakedArray.get(i),lineno);
-             isTokenGenrated=true;
    System.out.println("Classpart:"+t8.ClassPart+" "+"  Valuepart:"+t8.ValuePart+"  line#" +t8.lineNumber);
      }   
 }
    if(WordBreakedArray.get(i).equals("+") || WordBreakedArray.get(i).equals("-") ){
          Token t2= new Token("PM",WordBreakedArray.get(i),lineno);
-  isTokenGenrated=true;
-         System.out.println("Classpart:"+t2.ClassPart+" "+"Valuepart:"+t2.ValuePart+"line#" +t2.lineNumber);
+   System.out.println("Classpart:"+t2.ClassPart+" "+"Valuepart:"+t2.ValuePart+"line#" +t2.lineNumber);
           }
       else if(WordBreakedArray.get(i).equals("*") || WordBreakedArray.get(i).equals("/") ||WordBreakedArray.get(i).equals("%") ){
           Token t3= new Token("AM",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t3.ClassPart+" "+"Valuepart:"+t3.ValuePart+"line#" +t3.lineNumber);
+   System.out.println("Classpart:"+t3.ClassPart+" "+"Valuepart:"+t3.ValuePart+"line#" +t3.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("||") || WordBreakedArray.get(i).equals("&&")){
           Token t4= new Token("Logicaloperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t4.ClassPart+" "+"Valuepart:"+t4.ValuePart+"line#" +t4.lineNumber);
+   System.out.println("Classpart:"+t4.ClassPart+" "+"Valuepart:"+t4.ValuePart+"line#" +t4.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("!")){
           Token t5= new Token("Notoperator",WordBreakedArray.get(i),lineno);
-   isTokenGenrated=true;
-          System.out.println("Classpart:"+t5.ClassPart+" "+"Valuepart:"+t5.ValuePart+"line#" +t5.lineNumber);
+   System.out.println("Classpart:"+t5.ClassPart+" "+"Valuepart:"+t5.ValuePart+"line#" +t5.lineNumber);
       }
       else if(WordBreakedArray.get(i).equals("=")){
           Token t6= new Token("Assignmentoperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t6.ClassPart+" "+"Valuepart:"+t6.ValuePart+"line#" +t6.lineNumber);
+   System.out.println("Classpart:"+t6.ClassPart+" "+"Valuepart:"+t6.ValuePart+"line#" +t6.lineNumber);
       }
        else if(WordBreakedArray.get(i).equals("<") || WordBreakedArray.get(i).equals(">")){
           Token t7= new Token("Rationaloperator",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-          System.out.println("Classpart:"+t7.ClassPart+" "+"Valuepart:"+t7.ValuePart+"line#" +t7.lineNumber);
+   System.out.println("Classpart:"+t7.ClassPart+" "+"Valuepart:"+t7.ValuePart+"line#" +t7.lineNumber);
       }
        else{
            
@@ -96,8 +96,7 @@ void generatrtoken(){
        
      if(WordBreakedArray.get(i).equals(PunctuatorArray.get(j))){   
             Token t1= new Token(PunctuatorArray.get(j),WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Classpart:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
+   System.out.println("Classpart:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
      }   
 }
    Pattern identifier = Pattern.compile("([A-Za-z][_]?|_)([A-Za-z0-9]+[_]?)*");
@@ -105,7 +104,6 @@ void generatrtoken(){
         boolean id = idmatch.matches();
         if(id==true){
         Token t9 = new Token("Identifier",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
         
@@ -114,7 +112,6 @@ void generatrtoken(){
         boolean db = dbmatch.matches();
         if(db==true){
         Token t9 = new Token("Double",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
                 Pattern stringmatch = Pattern.compile("\".*?\"");
@@ -122,35 +119,33 @@ void generatrtoken(){
         boolean st = stmatch.matches();
         if(st==true){
         Token t9 = new Token("String",WordBreakedArray.get(i),lineno);
-         isTokenGenrated=true;
         System.out.println("Classpart:"+t9.ClassPart+" "+"Valuepart:"+t9.ValuePart+"line#" +t9.lineNumber);
         }
          for(j=0;j<booleanarray.size();j++){
        
      if(WordBreakedArray.get(i).equals(booleanarray.get(j))){   
             Token t1= new Token("Boolean",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Boolean:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
+   System.out.println("Boolean:"+t1.ClassPart+" "+"Valuepart:"+t1.ValuePart+"line#" +t1.lineNumber);
      }   
 }
-      if( isTokenGenrated==false)
-          {   
-            Token invalidToken= new Token("invalid",WordBreakedArray.get(i),lineno);
-    isTokenGenrated=true;
-            System.out.println("Classpart:"+invalidToken.ClassPart+" "+"Valuepart:"+invalidToken.ValuePart+"line#" +invalidToken.lineNumber);
-     }
+         
         
-   isTokenGenrated=false;
-    
+   
     }
    }
    
 }
-public class JavaApplicationCompiler {
-    
-static String readFile() throws IOException
+
+/**
+/**
+ *
+ * @author Bilal
+ */
+public class JavaApplication6 {
+
+   static String readFile() throws IOException
     {
-           String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/NetBeansProjects/JavaApplicationCompiler/ExtraFiles/InputtestFile.txt")));
+           String  data = new String(Files.readAllBytes(Paths.get("C:\\Users\\Bilal\\Desktop\\test.txt")));
        return data;
     }
     
@@ -305,33 +300,12 @@ String fileInput = readFile();
                     temp="";
                     temp+=(String.valueOf(fileInput.charAt(i)));
                   }
-                 
+               
+                             
+                     
                     
                   }
-  else if(fileInput.charAt(i)=='"')
-  {
-       allChars.add(temp);
-       temp="";
-       temp+=(String.valueOf(fileInput.charAt(i)));
-       i++;
-       while(fileInput.charAt(i)!='"')
-       {
-           if(fileInput.charAt(i)=='\n')
-           {allChars.add(temp);
-       temp="";
-       //i++;
-           }else
-           {  temp+=(String.valueOf(fileInput.charAt(i)));
-           i++;
-           }
-       }
-       temp+=(String.valueOf(fileInput.charAt(i)));
-       allChars.add(temp);
-       temp="";
-      
-       
-       
-  }
+   
    
     
    
@@ -375,6 +349,5 @@ boolean isNumeric = someString.chars().allMatch( Character::isDigit );
     return false;  
   }  
     }
-   
     
 }
