@@ -137,7 +137,7 @@ public class JavaApplicationCompiler {
 
    static String readFile() throws IOException
     {
-           String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/Documents/test.txt")));
+           String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/LaptopBackup/ComputerScience/SourceCodes/Compiler/InputtestFile.txt")));
        return data;
     }
     
