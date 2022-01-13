@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1803,7 +1804,89 @@ return false;
 
 
 }
+class SymbolTable {
 
+    String Name;
+    String Type;
+    String Category;
+    ArrayList<ClassTable> Parent_list;
+    ClassTable Link;
+
+    SymbolTable(String name, String type, String category, ArrayList<ClassTable> parent_list) {
+        this.Name = name;
+        this.Type = type;
+        this.Category = category;
+        this.Parent_list = parent_list;
+
+    }
+
+}
+
+class ClassTable {
+
+    String Name;
+    String Type;
+    String Acess_Modifier;
+    boolean Final;
+    String Type_Modifier;
+
+ClassTable(String name, String type, String acess_Modifier,boolean Final,String type_Modifier) {
+        this.Name = name;
+        this.Type = type;
+        this.Acess_Modifier = acess_Modifier;
+        this.Final= Final;
+        this.Type_Modifier = type_Modifier;
+
+    }
+}
+
+class FuntionTable {
+
+    String Name;
+    String Type;
+    Stack<Integer> Stk;
+FuntionTable(String name, String type,Stack<Integer> stk) {
+        this.Name = name;
+        this.Type = type;
+        this.Stk=stk;
+    }
+}
+
+class Semantic {
+
+    boolean InsertSymbolTable(String name, String type, String category, ArrayList<ClassTable> parent_list) {
+        SymbolTable S1 = new SymbolTable(name,type,category,parent_list);
+        return false;
+
+    }
+
+    boolean LookupSymbolTale(String Name,String type) {
+        return false;
+    }
+
+    boolean InsertClassTale(String name, String type, String acess_Modifier,boolean Final,String type_Modifier) {
+     ClassTable CTD1= new ClassTable(name,type,acess_Modifier,Final,type_Modifier); 
+    //to return 2 things use global resource such as list of obj type to return obj 
+     return false;
+    }
+
+    boolean LookupClassTale(String Name) {
+        return false;
+    }
+
+    boolean InsertFuntionTable(String name, String type,Stack<Integer> stk) {
+     FuntionTable FT1= new FuntionTable(name,type,stk); 
+        return false;
+    }
+
+    boolean LookupFuntionTable(String Name,Stack<Integer> stk ) {
+        return false;
+    }
+    boolean CompatibilityCheck(String lt,String rt,String operator){
+        return false;
+    }
+
+}
 public class JavaApplicationCompiler {
    static String ReadFile() throws IOException{
            String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/NetBeansProjects/JavaApplicationCompiler/ExtraFiles/InputtestFile.txt")));
