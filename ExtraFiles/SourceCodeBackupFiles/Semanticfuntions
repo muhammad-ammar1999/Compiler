@@ -1,11 +1,11 @@
 package javaapplicationcompiler;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Stack;
@@ -223,166 +223,27 @@ int i, j;
            }
     }
 }
-class SymbolTable {
-
-    String Name;
-    String Type;
-    String Category;
-    String Parent_list;
-    SymbolTable Link;
-
-    SymbolTable(String name, String type, String category, String parent_list) {
-        this.Name = name;
-        this.Type = type;
-        this.Category = category;
-        this.Parent_list = parent_list;
-        
-
-    }
-
-}
-
-class ClassTable {
-
-    String Name;
-    String Type;
-    String Acess_Modifier;
-  
-ClassTable(String name, String type, String acess_Modifier) {
-        this.Name = name;
-        this.Type = type;
-        this.Acess_Modifier = acess_Modifier;
-  
-    }
-}
-
-class FuntionTable {
-
-    String Name;
-    String Type;
-    Stack<Integer> Stk;
-FuntionTable(String name, String type,Stack<Integer> stk) {
-        this.Name = name;
-        this.Type = type;
-        this.Stk=stk;
-    }
-}
-
-class Semantic {
-     static  ArrayList<SymbolTable> SymbolTableList = new ArrayList<>(Arrays.asList());
-  public static boolean InsertSymbolTable(String name, String type, String category,String parent_list) {
-        SymbolTable S1 = new SymbolTable(name,type,category,parent_list);
-        S1.Link=S1;
-        if(LookupSymbolTable(S1.Name,S1.Type)){
-       System.out.println("redeclartion");
-        return false;
-        }
-      else
-        {SymbolTableList.add(S1);
-
-System.out.println(" added");
-        return true;
-        }
-        
-          }
-
-  public static boolean LookupSymbolTable(String name,String type) {
-for (int i=0;i<SymbolTableList.size();i++ )
-{
-    if(SymbolTableList.get(i).Name.equals(name) && SymbolTableList.get(i).Type.equals(type))
-        
-return true;
-        }
-
-   System.out.println("Undeclared");
-       
-        return false;
-    }
-  static  ArrayList<ClassTable> ClassTableList = new ArrayList<>(Arrays.asList());
-  public static  boolean InsertClassTable(String name, String type, String acess_Modifier) {
-     ClassTable CTD1= new ClassTable(name,type,acess_Modifier); 
-  
-           if(LookupClassTable(CTD1.Name,CTD1.Type)){
-       System.out.println("redeclartion");
-        return false;
-        
-        }
-      else
-        {ClassTableList.add(CTD1);
-        
-System.out.println(" added");
-
-        return true;
-        
-        }
-           }
-
-   public static boolean LookupClassTable(String name,String type) {
-for (int i=0;i<ClassTableList.size();i++ )
-{
-    if(ClassTableList.get(i).Name.equals(name)&&ClassTableList.get(i).Type.equals(type))
-return true;
-        }
-   System.out.println("Undeclared");
-        return false;
-    }
-
-   
-static  ArrayList<FuntionTable> FuntionTableList = new ArrayList<>(Arrays.asList());
-   public static boolean InsertFuntionTable(String name, String type,Stack<Integer> stk) {
-     FuntionTable FT1= new FuntionTable(name,type,stk); 
-   if(LookupFuntionTable(FT1.Name,FT1.Stk)){
-       System.out.println("redeclartion");
-        return false;
-        
-        }
-      else
-        {
-System.out.println(" added");
-
-            FuntionTableList.add(FT1); 
-        return true;
-        } 
-   }
-
-    public static boolean LookupFuntionTable(String name,Stack<Integer> stk ) {
-for (int i=0;i<FuntionTableList.size();i++ )
-{
-    if(FuntionTableList.get(i).Name.equals(name) && stk.peek()==FuntionTableList.get(i).Stk.peek())
-return true;
-        }
-   System.out.println("Undeclared");
-       
-        return false;
-
-    }
-  public static  boolean CompatibilityCheck(String lt,String rt,String operator){
-        return false;
-    }
-}
-
 
  class Syntax {
-   int s=1;
+
     int k=0;
-    String TempNameCT,Tempam="",TempTypeCT,TempParent="",TempNameST,TempTypeST,Cat="",TempNameFT,TempTypeFT; 
-     Stack<Integer> stack = new Stack<Integer>();
-    
+String TempType, Tempname;
+ClassTable tempParent,link;
     public boolean start(){
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("class")){
     if(def()){
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")){
         k++;
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("class")){
-     TempTypeST=LexicalAnalyzer.TokenList.get(k).value_Part;
+      TempType=LexicalAnalyzer.TokenList.get(k).value_Part;
         k++;
     if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-     TempNameST=LexicalAnalyzer.TokenList.get(k).value_Part;    
-        k++;
-        
+      Tempname=LexicalAnalyzer.TokenList.get(k).value_Part;
+ Semantic.LookupSymbolTable(Tempname, TempType);
+      //link=LexicalAnalyzer.TokenList.get(k).value_Part;   
+          
+      k++;
     if(inh()){
-          Semantic.InsertSymbolTable(TempNameST,TempTypeST,Cat,TempParent); 
-          //check is this insertion is valid if yes follow it as examples 
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("{")){
         k++;
         if(CB()){
@@ -393,7 +254,7 @@ return true;
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("void")){
         k++;
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("main")){
-           k++;
+k++;
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
             k++;
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
@@ -432,27 +293,20 @@ if(def()){
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("extends")){
             k++;
       if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")) {
-          if(Semantic.LookupSymbolTable(LexicalAnalyzer.TokenList.get(k).value_Part, TempTypeST))//follow this
-          TempParent=LexicalAnalyzer.TokenList.get(k).value_Part;    
+       //   tempParent=LexicalAnalyzer.TokenList.get(k).value_Part;   
+          Semantic.InsertSymbolTable(Tempname, TempType, "", tempParent,link);
           k++;
                return true;
            }
         }
         return true;
     }
-   
     public boolean Dec(){
         if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("double")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("boolean")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("string")){
-        TempTypeFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-            if(AM()){
+        if(AM()){
             if(DT()){
                 if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-     TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-    stack.push(s);
-                    Semantic.InsertFuntionTable(TempNameFT,TempTypeFT,stack);
-                   //follow this example
-                    k++;
-                
+                k++;
                 if(init()){
                     if(list()){
               return true;
@@ -470,10 +324,7 @@ if(def()){
        if(((LexicalAnalyzer.TokenList.get(k).value_Part).equals(","))){
        k++;
        if(((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier"))){
-           
-           stack.push(s);
-                    Semantic.InsertFuntionTable(LexicalAnalyzer.TokenList.get(k).value_Part,LexicalAnalyzer.TokenList.get(k).class_Part,stack);
-        k++;
+           k++;
         if(init()){   
         if(list()){
         return true;
@@ -733,10 +584,7 @@ if(MST()){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("this")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("super")||(LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
      if(Ts()){
      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-    TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-         Semantic.LookupFuntionTable(TempNameFT, stack);
-         k++;
-     
+     k++;
      if(ref()){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("!=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("==")){
      k++;
@@ -835,9 +683,7 @@ if(MST()){
  public boolean PL2(){
  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-  Semantic.LookupFuntionTable(TempNameFT, stack);
-     k++;
+ k++;
  if(PL3()){
  return true;
  }
@@ -872,16 +718,11 @@ if(MST()){
  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("class")){
  if(AM1()){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("class")){
-    TempTypeST=LexicalAnalyzer.TokenList.get(k).value_Part;
-         k++;
+     k++;
      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-        TempNameST=LexicalAnalyzer.TokenList.get(k).value_Part;
-         k++;
-     
+     k++;
      if(inh()){
-          Semantic.InsertSymbolTable(TempNameST,TempTypeST,Cat,TempParent); 
-      
-         if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("{")){
+     if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("{")){
      k++;
      if(CB()){
      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("}")){
@@ -902,9 +743,7 @@ if(MST()){
  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
  k++;
  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-     TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-  Semantic.LookupFuntionTable(TempNameFT, stack);
-     k++;
+ k++;
  if(ref()){
  return true;
  }
@@ -956,9 +795,7 @@ if(MST()){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
      k++;
      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-         TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      Semantic.LookupFuntionTable(TempNameFT, stack);
-         k++;
+     k++;
      if(ref()){
          return true;
      }
@@ -1189,10 +1026,7 @@ return true;
   }
   public boolean F1(){
       if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-         if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-             TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-     Semantic.LookupFuntionTable(TempNameFT, stack);
-     
+         if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){ 
              k++;
       if(F2()){
           return true;
@@ -1200,13 +1034,10 @@ return true;
       }
       else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("this")){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("this")){
-          
           k++;
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
               k++;
           if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-              TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-               Semantic.LookupFuntionTable(TempNameFT ,stack);
               k++;
               if(F2()){
               return true;
@@ -1219,8 +1050,6 @@ return true;
           k++;
           if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
           if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-           TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-              Semantic.LookupFuntionTable(TempNameFT, stack);
               k++;
               if(F2()){
               return true;
@@ -1241,8 +1070,6 @@ return true;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
   k++;
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-       Semantic.LookupFuntionTable(TempNameFT, stack);
       k++;
       if(F2()){
       return true;
@@ -1252,8 +1079,7 @@ return true;
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-      
-          k++;
+      k++;
       if(args()){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
       k++;
@@ -1290,9 +1116,7 @@ return true;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")){
       k++;
       if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-          TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      Semantic.LookupFuntionTable(TempNameFT, stack);
-          k++;
+      k++;
       if(F2()){
       return true;
       }
@@ -1329,17 +1153,14 @@ return false;
   }}
   else if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-
-     k++;
+ k++;
  if(SST2()){
  return true;
  }
  }
   }
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("double")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("boolean")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("string")){
-TempTypeFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      k++;
+ k++;
  if(SST3()){
  return true;
  }
@@ -1347,13 +1168,10 @@ TempTypeFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")){
-        k++;
+  k++;
   if(DT()){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-  stack.push(s);
-TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;  
-    Semantic.InsertFuntionTable(TempNameFT,TempTypeFT,stack);
-      k++;
+  k++;
   if(init()){
   if(list()){
   return true;
@@ -1365,14 +1183,10 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")){
-  
-      k++;
+  k++;
   if(DT()){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-  stack.push(s);
-TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;    
-    Semantic.InsertFuntionTable(TempNameFT,TempTypeFT,stack);
-      k++;
+  k++;
   if(init()){
   if(list()){
   return true;
@@ -1438,9 +1252,7 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   public boolean SST1(){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-  Semantic.LookupFuntionTable(TempNameFT, stack);
-      k++;
+  k++;
   if(SST4()){
   return true;
   }
@@ -1450,8 +1262,7 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   public boolean SST2(){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("!=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("==")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("[")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("#")||(LexicalAnalyzer.TokenList.get(k).class_Part).equals("double")||(LexicalAnalyzer.TokenList.get(k).class_Part).equals("string")||(LexicalAnalyzer.TokenList.get(k).class_Part).equals("boolean")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("!")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("this")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("super")){
-  Semantic.LookupFuntionTable(TempNameCT, stack);
-      if(ref()){
+  if(ref()){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("!=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("==")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("="))
   {k++;
   if(OE()){
@@ -1461,7 +1272,6 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }}
   }
   else if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      Semantic.LookupSymbolTable(TempNameST, TempTypeST);
       if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
       k++;
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")){
@@ -1484,8 +1294,7 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
       }
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-  Semantic.LookupClassTable(TempNameCT,TempTypeCT);
-      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
+  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
   k++;
   if(args()){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
@@ -1506,10 +1315,7 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   public boolean SST3(){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-   stack.push(s);
-   TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;  
-   Semantic.InsertFuntionTable(TempNameFT,TempNameFT,stack);
-      k++;
+  k++;
   if(init()){
   if(list()){
   return true;
@@ -1521,10 +1327,7 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   if(ar()){
 
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-   stack.push(s);
-   TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;  
-    Semantic.InsertFuntionTable(TempNameFT,TempTypeFT,stack);
-     k++;
+  k++;
   if(ar3()){
   return true;
   }
@@ -1588,18 +1391,17 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   return false;
   }
   public boolean CB(){
-//  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")){
-//Tempam=LexicalAnalyzer.TokenList.get(k).value_Part;
-//k++;
-//      if(CB1()){
-//      return true;
-//
-//      }
-//  }
-  if ((LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")){
+  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("public")){
+
+
+      if(CB1()){
+      return true;
+
+      }
+  }
+  else if ((LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("private")){
-   Tempam=LexicalAnalyzer.TokenList.get(k).value_Part;
-          k++;
+      k++;
       if(CB1()){
       return true;
       }
@@ -1608,23 +1410,15 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("static")){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("static")){
       k++;
-      TempTypeCT =LexicalAnalyzer.TokenList.get(k).value_Part;
-       if(Return()){
+      if(Return()){
       if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      TempNameCT =LexicalAnalyzer.TokenList.get(k).value_Part;
-          stack.push(s);
-
-    Semantic.InsertClassTable(TempNameCT, TempTypeCT,Tempam);
-  
-
-          k++;
+      k++;
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
       k++;
       if(PL()){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
           k++;
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("{")){
-           s++;
       k++;
       if(MST()){
       if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("}")){
@@ -1644,16 +1438,14 @@ TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   else if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      k++;
+ k++;
   if(CB2()){
   return true;
   }
   }
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("sting")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("boolean")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("double")){
-  TempTypeCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      if(DT()){
+  if(DT()){
   if(CB3()){
   return true;
   }
@@ -1661,13 +1453,9 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("void")){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("void")){
-  TempTypeCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      k++;
-  
+  k++;
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
- TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;   
- Semantic.InsertClassTable(TempNameCT,TempNameCT,Tempam);
-      k++;
+  k++;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
   k++;
   if(PL()){
@@ -1694,7 +1482,6 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
       }
   public boolean CB1(){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("boolean")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("sting")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals("double")){
-     TempTypeCT=LexicalAnalyzer.TokenList.get(k).value_Part;
       if(DT()){
       if(CB5()){    
       return true;
@@ -1703,9 +1490,6 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   else if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
        if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-          TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-           Semantic.InsertClassTable(TempNameCT,TempTypeCT , Tempam);
-           
   k++;
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
   k++;
@@ -1730,13 +1514,9 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("void")){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("void")){
-  TempTypeCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      k++;
-  
-      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-          TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-  Semantic.InsertClassTable(TempNameCT,TempTypeCT, Tempam);
-          k++;
+  k++;
+     if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
+  k++;
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
   k++;
   if(PL()){
@@ -1764,10 +1544,8 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   public boolean CB2(){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-  
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-  Semantic.LookupClassTable(TempNameCT,TempTypeCT);
-         k++;
+  k++;
   if(PL()){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
   k++;
@@ -1787,21 +1565,14 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
   }
   }
   else if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-      Semantic.LookupSymbolTable(TempNameST,TempTypeST );
-      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-  TempNameFT=LexicalAnalyzer.TokenList.get(k).value_Part;
+  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
   k++;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")){
   k++;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("new")){
   k++;
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-  	 stack.push(s);
-  TempTypeFT=LexicalAnalyzer.TokenList.get(k).value_Part;
-    Semantic.InsertFuntionTable(TempNameFT,TempTypeFT,stack);
-
-
-      k++;
+  k++;
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
 
   k++;
@@ -1821,8 +1592,7 @@ return false;
   public boolean CB3(){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
   if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
- TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
-      k++;
+  k++;
   if(CB4()){
       return true;
   }
@@ -1845,8 +1615,7 @@ return false;
  public boolean CB4(){
  if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-  Semantic.InsertClassTable(TempNameCT, TempTypeCT,Tempam);
-         k++;
+  k++;
   if(PL()){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
   k++;
@@ -1866,10 +1635,7 @@ return false;
   }
  }
  else if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals(",")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals(";")){
- 	 stack.push(s);
-    Semantic.InsertFuntionTable(LexicalAnalyzer.TokenList.get(k).value_Part,LexicalAnalyzer.TokenList.get(k).class_Part,stack);
-
-    if(init()){
+ if(init()){
  if(list()){
    if(CB()){  
    return true;
@@ -1882,7 +1648,6 @@ return false;
  public boolean CB5(){
  if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
      if((LexicalAnalyzer.TokenList.get(k).class_Part).equals("Identifier")){
-TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
          k++;
          if(CB6()){
              return true;
@@ -1893,10 +1658,7 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
  }
  public boolean CB6(){
      if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("=")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals(";")||(LexicalAnalyzer.TokenList.get(k).value_Part).equals(",")){
-   	 stack.push(s);
-    Semantic.InsertFuntionTable(TempNameCT,LexicalAnalyzer.TokenList.get(k).class_Part,stack);
-
- if(init()){
+      if(init()){
  if(list()){
    if(CB()){  
    return true;
@@ -1906,7 +1668,6 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
      }
   else if ((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
     if((LexicalAnalyzer.TokenList.get(k).value_Part).equals("(")){
-        Semantic.InsertClassTable(TempNameCT, TempTypeCT, Tempam);
   k++;
   if(PL()){
   if((LexicalAnalyzer.TokenList.get(k).value_Part).equals(")")){
@@ -2051,7 +1812,112 @@ TempNameCT=LexicalAnalyzer.TokenList.get(k).value_Part;
 
 
 }
+class SymbolTable {
 
+    String Name;
+    String Type;
+    String Category;
+    ClassTable Parent_list;
+    ClassTable Link;
+
+    SymbolTable(String name, String type, String category, ClassTable parent_list,ClassTable link) {
+        this.Name = name;
+        this.Type = type;
+        this.Category = category;
+        this.Parent_list = parent_list;
+        this.Link=link;
+
+    }
+
+}
+
+class ClassTable {
+
+    String Name;
+    String Type;
+    String Acess_Modifier;
+    boolean Final;
+    String Type_Modifier;
+
+ClassTable(String name, String type, String acess_Modifier,boolean Final,String type_Modifier) {
+        this.Name = name;
+        this.Type = type;
+        this.Acess_Modifier = acess_Modifier;
+        this.Final= Final;
+        this.Type_Modifier = type_Modifier;
+
+    }
+}
+
+class FuntionTable {
+
+    String Name;
+    String Type;
+    Stack<Integer> Stk;
+FuntionTable(String name, String type,Stack<Integer> stk) {
+        this.Name = name;
+        this.Type = type;
+        this.Stk=stk;
+    }
+}
+
+class Semantic {
+     static  ArrayList<SymbolTable> SymbolTableList = new ArrayList<>(Arrays.asList());
+  public static boolean InsertSymbolTable(String name, String type, String category,ClassTable parent_list,ClassTable link) {
+        SymbolTable S1 = new SymbolTable(name,type,category,parent_list,link);
+        if(LookupSymbolTable(S1.Name,S1.Type)){
+       System.out.println("redeclartion");
+        return false;
+        
+        }
+      else
+        {SymbolTableList.add(S1);
+        return true;
+        }
+    }
+
+  public static boolean LookupSymbolTable(String name,String type) {
+for (int i=0;i<SymbolTableList.size();i++ )
+{
+    if(SymbolTableList.get(i).Name==name && SymbolTableList.get(i).Type==type)
+return true;
+        }
+System.out.println("Undeclared");
+       
+        return false;
+    }
+ static  ArrayList<ClassTable> ClassTableList = new ArrayList<>(Arrays.asList());
+  public static  boolean InsertClassTable(String name, String type, String acess_Modifier,boolean Final,String type_Modifier) {
+     ClassTable CTD1= new ClassTable(name,type,acess_Modifier,Final,type_Modifier); 
+  
+           if(LookupSymbolTable(CTD1.Name,CTD1.Type)){
+       System.out.println("redeclartion");
+        return false;
+        
+        }
+      else
+        {SymbolTableList.add(CTD1);
+        return true;
+        }
+           }
+
+   public static boolean LookupClassTable(String Name) {
+        return false;
+    }
+
+   public static boolean InsertFuntionTable(String name, String type,Stack<Integer> stk) {
+     FuntionTable FT1= new FuntionTable(name,type,stk); 
+        return false;
+    }
+
+    public static boolean LookupFuntionTable(String Name,Stack<Integer> stk ) {
+        return false;
+    }
+  public static  boolean CompatibilityCheck(String lt,String rt,String operator){
+        return false;
+    }
+
+}
 public class JavaApplicationCompiler {
    static String ReadFile() throws IOException{
            String  data = new String(Files.readAllBytes(Paths.get("/home/muhammadammar/NetBeansProjects/JavaApplicationCompiler/ExtraFiles/InputtestFile.txt")));
